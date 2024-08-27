@@ -1,0 +1,37 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - master  # Указываем ветку, на которую будут реагировать изменения
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3  # Клонируем репозиторий
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2  # Настройка Buildx для сборки
+
+      - name: Cache Docker layers
+        uses: docker/cache-action@v2  # Кэширование слоёв Docker
+        with:
+          path: |
+            ~/.docker/buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/telegrambot_storeolimova:latest  # Замените на ваш Docker Hub username и имя образа
+
+      - name: Deploy
+        run: echo "Deploy your application here"  # Добавьте сюда шаги для развертывания, если необходимо
