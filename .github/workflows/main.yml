@@ -31,7 +31,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/telegrambot_storeolimova:latest  # Замените на ваш Docker Hub username и имя образа
+          tags: ${{ secrets.DOCKER_USERNAME }}amirolimov137:latest  # Замените на ваш Docker Hub username и имя образа
 
       - name: Deploy
         run: echo "Deploy your application here"  # Добавьте сюда шаги для развертывания, если необходимо
